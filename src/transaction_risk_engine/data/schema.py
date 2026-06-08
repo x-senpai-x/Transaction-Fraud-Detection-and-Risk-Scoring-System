@@ -17,3 +17,19 @@ PROXY_ID_COLUMNS = list(PROXY_ID_COMPONENTS.keys())
 IMPORTANT_COLUMNS_FOR_PROFILING = [
     TRANSACTION_ID, TARGET, TIME_COLUMN, "TransactionAmt", "ProductCD"
 ] + PROXY_ID_COLUMNS
+
+FREQUENCY_COLUMNS = [
+    "card1", "card2", "card3", "card5", "card6",
+    "addr1", "addr2",
+    "P_emaildomain", "R_emaildomain",
+    "DeviceType", "DeviceInfo"
+] + PROXY_ID_COLUMNS
+
+M_COLUMNS = [f"M{i}" for i in range(1, 10)]
+PASSTHROUGH_NUMERIC_PREFIXES = ["V", "C", "D"]
+LABEL_ENCODE_COLUMNS = ["ProductCD", "card4", "card6"]
+MISSINGNESS_COLUMNS = [
+    "addr1", "addr2", "dist1", "dist2", 
+    "P_emaildomain", "R_emaildomain", 
+    "DeviceType", "DeviceInfo"
+]

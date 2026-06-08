@@ -47,9 +47,9 @@ Add only after the baseline works:
 
 ## Current status
 
-Phase 0 repository setup is complete. The project now has a Python package skeleton, checked-in baseline config, dependency files, artifact directories, and smoke tests.
+Phase 0, Phase 1 (Data Ingestion), and Phase 2 (Baseline Features & Splits) are complete.
 
-Next milestone: Phase 1 data ingestion.
+Next milestone: Phase 3 baseline model training.
 
 ## Setup
 
