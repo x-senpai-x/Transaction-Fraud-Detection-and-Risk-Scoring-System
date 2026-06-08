@@ -47,9 +47,9 @@ Add only after the baseline works:
 
 ## Current status
 
-Phase 0, Phase 1 (Data Ingestion), and Phase 2 (Baseline Features & Splits) are complete.
+Phase 0, Phase 1 (Data Ingestion), Phase 2 (Baseline Features & Splits), and Phase 3 (Baseline Model Training) are complete.
 
-Next milestone: Phase 3 baseline model training.
+Next milestone: Phase 4 API and Dashboard.
 
 ## Setup
 
