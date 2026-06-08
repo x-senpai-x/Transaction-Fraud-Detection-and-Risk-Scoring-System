@@ -58,12 +58,16 @@ class FraudRiskPredictor:
 
         # 4. Predict
         prob = float(self.model.predict_proba(X_inf)[0, 1])
-        risk_score = int(prob * 100)
+        
+        # Scale raw probabilities (which max out around ~0.13 due to extreme class imbalance)
+        # into a human-readable 0-100 risk score for the dashboard demo.
+        # Base rate is ~0.035, max is ~0.13. 
+        risk_score = int(min(100, max(0, (prob - 0.03) * 1000)))
 
-        # Determine decision (thresholds could be loaded from config)
-        if prob > 0.70:
+        # Determine decision based on scaled score
+        if risk_score > 75:
             decision = "BLOCK"
-        elif prob > 0.30:
+        elif risk_score > 40:
             decision = "REVIEW"
         else:
             decision = "APPROVE"
