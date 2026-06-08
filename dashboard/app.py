@@ -75,7 +75,18 @@ def page_transaction_explorer():
             if st.button("Score Transaction 🚀", type="primary"):
                 with st.spinner("Calling API..."):
                     try:
-                        response = requests.post(f"{API_URL}/predict", json=selected_sample)
+                        import math
+                        def clean_nans(obj):
+                            if isinstance(obj, dict):
+                                return {k: clean_nans(v) for k, v in obj.items()}
+                            elif isinstance(obj, list):
+                                return [clean_nans(v) for v in obj]
+                            elif isinstance(obj, float) and math.isnan(obj):
+                                return None
+                            return obj
+                            
+                        clean_sample = clean_nans(selected_sample)
+                        response = requests.post(f"{API_URL}/predict", json=clean_sample)
                         
                         if response.status_code == 200:
                             data = response.json()
