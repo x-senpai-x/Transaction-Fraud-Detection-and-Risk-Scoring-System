@@ -13,6 +13,8 @@ from transaction_risk_engine.features.frequency import (
     save_frequency_maps,
     transform_frequency,
 )
+from transaction_risk_engine.features.historical import apply_historical_features, build_historical_features, get_latest_historical_state, save_historical_state
+from transaction_risk_engine.data.schema import PROXY_ID_COLUMNS
 from transaction_risk_engine.data.load import resolve_data_paths
 
 
@@ -49,6 +51,14 @@ def main() -> None:
     valid = transform_frequency(valid, freq_maps)
     test = transform_frequency(test, freq_maps)
 
+    print("Building Block C (historical features)...")
+    train = build_historical_features(train, PROXY_ID_COLUMNS)
+    valid = build_historical_features(valid, PROXY_ID_COLUMNS)
+    test = build_historical_features(test, PROXY_ID_COLUMNS)
+
+    print("Extracting Historical State for inference...")
+    hist_state = get_latest_historical_state(train, PROXY_ID_COLUMNS)
+
     print("Extracting feature matrices...")
     X_train = get_feature_matrix(train)
     X_valid = get_feature_matrix(valid)
@@ -74,6 +84,7 @@ def main() -> None:
         json.dump(metadata, f, indent=2)
 
     save_frequency_maps(freq_maps, Path("models/frequency_maps.json"))
+    save_historical_state(hist_state, Path("models/historical_state.json"))
 
     report_path = paths.reports_dir / "feature_report.md"
     report_path.parent.mkdir(parents=True, exist_ok=True)
