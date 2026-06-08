@@ -1,0 +1,53 @@
+project:
+  name: transaction-risk-engine
+  seed: 42
+
+data:
+  raw_dir: data/raw
+  interim_dir: data/interim
+  processed_dir: data/processed
+  transaction_file: train_transaction.csv
+  identity_file: train_identity.csv
+  joined_file: joined_transactions.parquet
+
+split:
+  method: time
+  train_frac: 0.70
+  valid_frac: 0.15
+  test_frac: 0.15
+  time_column: TransactionDT
+
+features:
+  use_basic: true
+  use_frequency: true
+  use_historical: true
+  use_velocity: false
+  use_graph: false
+  categorical_columns:
+    - ProductCD
+    - card1
+    - card2
+    - card3
+    - card4
+    - card5
+    - card6
+    - addr1
+    - addr2
+    - P_emaildomain
+    - R_emaildomain
+    - DeviceType
+    - DeviceInfo
+
+model:
+  algorithm: lightgbm
+  target: isFraud
+  metric_primary: pr_auc
+  threshold_review: 0.30
+  threshold_block: 0.70
+
+reports:
+  output_dir: reports
+
+api:
+  host: 127.0.0.1
+  port: 8000
