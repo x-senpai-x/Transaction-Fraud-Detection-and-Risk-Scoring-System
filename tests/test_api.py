@@ -12,7 +12,6 @@ client = TestClient(app)
 
 @patch("api.main.predictor")
 def test_health_check(mock_predictor):
-    mock_predictor.predict.return_value = {"status": "ok"} # dummy
     response = client.get("/health")
     assert response.status_code == 200
     assert response.json()["status"] == "ok"

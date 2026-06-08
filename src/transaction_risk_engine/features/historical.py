@@ -1,3 +1,5 @@
+import json
+from pathlib import Path
 import numpy as np
 import pandas as pd
 
@@ -14,7 +16,7 @@ def build_historical_features(df: pd.DataFrame, entities: list[str] = None) -> p
     df_sorted = df.copy()
     if "TransactionDT" in df_sorted.columns:
         # Assumes already sorted chronologically, but just in case
-        df_sorted = df_sorted.sort_values("TransactionDT")
+        df_sorted = df_sorted.sort_values("TransactionDT", kind="mergesort")
 
     new_features = {}
 
@@ -31,7 +33,7 @@ def build_historical_features(df: pd.DataFrame, entities: list[str] = None) -> p
 
         # 2. Previous mean amount
         if "TransactionAmt" in df_sorted.columns:
-            mean_amt = grouped["TransactionAmt"].apply(lambda x: x.shift(1).expanding().mean())
+
             # Pandas 2.2 groupby apply returns a multiindex sometimes or maintains original index if not group keys
             # Let's use a safer approach for pandas 3/2.2:
 
@@ -81,7 +83,7 @@ def get_latest_historical_state(df: pd.DataFrame, entities: list[str] = None) ->
 
     df_sorted = df.copy()
     if "TransactionDT" in df_sorted.columns:
-        df_sorted = df_sorted.sort_values("TransactionDT")
+        df_sorted = df_sorted.sort_values("TransactionDT", kind="mergesort")
 
     state = {}
     for entity in entities:
@@ -175,9 +177,6 @@ def apply_historical_features(df: pd.DataFrame, state: dict[str, dict], entities
 
     features_df = pd.DataFrame(new_features, index=df.index)
     return pd.concat([df, features_df], axis=1)
-
-import json
-from pathlib import Path
 
 def save_historical_state(state: dict[str, dict], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)

@@ -1,6 +1,5 @@
 import pandas as pd
-import numpy as np
-from transaction_risk_engine.features.historical import build_historical_features
+from transaction_risk_engine.features.historical import build_historical_features, apply_historical_features, get_latest_historical_state
 
 def test_historical_features_chronological():
     df = pd.DataFrame({
@@ -26,7 +25,6 @@ def test_historical_features_chronological():
     assert res.loc[3, "card_uid_time_since_last"] == 2  # 4 - 2
 
 
-from transaction_risk_engine.features.historical import get_latest_historical_state, apply_historical_features
 
 def test_inference_historical_features():
     df_train = pd.DataFrame({

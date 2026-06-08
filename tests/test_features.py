@@ -72,6 +72,3 @@ def test_get_feature_matrix():
     
     assert "V1" in feat_df.columns
     assert "card1_freq" in feat_df.columns
-
-from transaction_risk_engine.features.historical import build_historical_features
-from transaction_risk_engine.data.schema import PROXY_ID_COLUMNS

@@ -13,7 +13,7 @@ from transaction_risk_engine.features.frequency import (
     save_frequency_maps,
     transform_frequency,
 )
-from transaction_risk_engine.features.historical import build_historical_features, get_latest_historical_state, save_historical_state
+from transaction_risk_engine.features.historical import apply_historical_features, build_historical_features, get_latest_historical_state, save_historical_state
 from transaction_risk_engine.data.schema import PROXY_ID_COLUMNS
 from transaction_risk_engine.data.load import resolve_data_paths
 
